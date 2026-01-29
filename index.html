@@ -3,23 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Método 33 Widget</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>M33 Widget</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
   <main class="wrap">
-    <section class="card" role="group" aria-label="Widget Método 33">
+    <!-- Loader premium (se ve 0.25s y luego entra la tarjeta) -->
+    <div class="loader" id="loader" aria-label="Cargando">
+      <div class="loaderCard">
+        <div class="shimmer"></div>
+        <div class="bar w40"></div>
+        <div class="bar w70"></div>
+        <div class="bar w55"></div>
+      </div>
+    </div>
+
+    <!-- Card -->
+    <section class="card hidden" id="card" role="group" aria-label="Saludo Método 33">
       <div class="top">
-        <div class="kicker">MÉTODO 33</div>
-        <div class="badge" id="badgeDay">DÍA 0</div>
+        <div class="mini" id="miniLabel">PROGRESO</div>
+        <div class="pill" id="pillDay">DÍA 0</div>
       </div>
 
-      <h1 class="title" id="greeting">Buenas, Alex 👋</h1>
+      <div class="titleRow">
+        <h1 class="title" id="greeting">Buenas, Alex 👋</h1>
+      </div>
+
       <p class="subtitle" id="quote">Empieza por el primer set. Lo demás viene solo.</p>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="./script.js" defer></script>
 </body>
 </html>
