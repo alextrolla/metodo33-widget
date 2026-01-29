@@ -3,46 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>M33 Widget</title>
-
-  <!-- RUTAS ABSOLUTAS para que Notion/Vercel no líen los paths -->
+  <title>Widget</title>
   <link rel="stylesheet" href="/styles.css" />
-
-  <!-- Fallback mínimo -->
-  <style>
-    html, body { margin:0; padding:0; background:transparent; }
-  </style>
 </head>
 
 <body>
-  <main class="wrap">
-
-    <!-- Loader (sale 250ms y se va) -->
-    <div class="loader" id="loader" aria-label="Cargando">
-      <div class="loaderCard">
-        <div class="shimmer"></div>
-        <div class="bar w45"></div>
-        <div class="bar w75"></div>
-        <div class="bar w55"></div>
-      </div>
+  <!-- SOLO EL RECUADRO -->
+  <section class="card" role="group" aria-label="Saludo">
+    <div class="top">
+      <div class="title" id="greeting">👋 Buenas noches, Alex</div>
+      <div class="pill" id="pillDay">DÍA 0</div>
     </div>
 
-    <!-- IMPORTANTE: el card SIEMPRE visible (evita pantalla blanca si JS falla) -->
-    <section class="card" id="card" role="group" aria-label="Saludo Método 33">
-      <div class="top">
-        <div class="mini" id="miniLabel">MÉTODO 33</div>
-        <div class="pill" id="pillDay">DÍA 0</div>
-      </div>
-
-      <h1 class="title" id="greeting">Buenas, Alex 👋</h1>
-      <p class="subtitle" id="quote">Empieza por el primer set. Lo demás viene solo.</p>
-    </section>
-  </main>
+    <div class="subtitle" id="quote">Empieza por el primer set. Lo demás viene solo.</div>
+  </section>
 
   <script src="/script.js" defer></script>
-</body>
-</html>
-
-  <script src="./script.js" defer></script>
 </body>
 </html>
