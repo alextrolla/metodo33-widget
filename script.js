@@ -1,120 +1,71 @@
-// =========================
-// M33 Widget — v2 (impoluto)
-// =========================
+/* ===========================
+   CONFIG (A: manual fácil)
+   ===========================
 
-function qp(name, fallback = null) {
-  const u = new URL(window.location.href);
-  const v = u.searchParams.get(name);
-  return (v === null || v === "") ? fallback : v;
+   Puedes personalizar por URL:
+   - name: nombre del cliente
+   - start: fecha inicio del plan (YYYY-MM-DD)
+   - tz: opcional, no hace falta normalmente
+
+   Ejemplo:
+   https://TU-VERCEL.vercel.app/?name=Gabriel&start=2026-01-14
+*/
+
+const DEFAULT_NAME = "Alex";
+const DEFAULT_START = "2026-01-14"; // cambia si quieres un default
+
+// 200 frases si quieres: pega aquí
+const QUOTES = [
+  "Empieza por el primer set. Lo demás viene solo.",
+  "Hoy cuenta. Mañana se nota.",
+  "Más simple: hazlo. Luego lo mejoras.",
+  "Un buen día no se espera: se entrena.",
+  "Constancia > motivación.",
+  // ...mete aquí las tuyas (hasta 200)
+];
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
 }
 
-function safeName(s) {
-  // Limpio: letras, espacios, guiones; limita longitud
-  return (s || "")
-    .toString()
-    .replace(/[^\p{L}\p{N}\s\-_.]/gu, "")
-    .trim()
-    .slice(0, 22) || "Alex";
-}
-
-function greetingForHour(h) {
+function getGreetingByHour(date = new Date()) {
+  const h = date.getHours();
   if (h >= 6 && h < 12) return "Buenos días";
   if (h >= 12 && h < 20) return "Buenas tardes";
   return "Buenas noches";
 }
 
-// Hash estable para "frase del día"
-function hashString(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return (h >>> 0);
+// DÍA 0 si es el mismo día de inicio
+function calcDayNumber(startDateStr) {
+  // Interpretamos start como fecha local (00:00 local)
+  const [y, m, d] = startDateStr.split("-").map(Number);
+  const start = new Date(y, m - 1, d, 0, 0, 0, 0);
+  const now = new Date();
+
+  const ms = now.getTime() - start.getTime();
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+  return Math.max(0, days);
 }
 
-const PHRASES = [
-  "Hoy toca hacerlo fácil.",
-  "Hazlo imperfecto, pero hazlo.",
-  "Cero drama: solo cumple lo de hoy.",
-  "No necesitas motivación: necesitas un sistema.",
-  "Constancia > intensidad.",
-  "Empieza por el primer set. Lo demás viene solo.",
-  "Una sesión cuenta. Aunque sea la mínima.",
-  "Pequeño hoy. Enorme en 12 semanas.",
-  "Lo que se repite, se convierte en resultado.",
-  "Ganas por presentarte.",
-  "Si tu semana es un caos, tu plan debe adaptarse.",
-  "1% mejor que ayer.",
-  "Hoy es un buen día para sumar.",
-  "Enfócate en lo controlable: la siguiente serie.",
-  "Disciplina tranquila. Progreso real.",
-  // mete aquí tus 200 frases cuando quieras
-];
-
-function pickPhrase(name, mode) {
-  if (!PHRASES.length) return "";
-  if (mode === "daily") {
-    const d = new Date();
-    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}-${name}`;
-    const idx = hashString(key) % PHRASES.length;
-    return PHRASES[idx];
-  }
-  // random
-  return PHRASES[Math.floor(Math.random() * PHRASES.length)];
-}
-
-function applyTheme(theme) {
-  if (theme === "dark") document.body.classList.add("force-dark");
-  if (theme === "light") document.body.classList.add("force-light");
-}
-
-function applyTransparent(flag) {
-  if (flag) document.body.classList.add("transparent");
-}
-
-// Permite cambiar el granate por URL: ?accent=8a1f3d (hex sin #)
-function applyAccent(hex) {
-  if (!hex) return;
-  const clean = hex.replace("#", "").trim();
-  if (!/^[0-9a-fA-F]{6}$/.test(clean)) return;
-
-  const r = parseInt(clean.slice(0,2), 16);
-  const g = parseInt(clean.slice(2,4), 16);
-  const b = parseInt(clean.slice(4,6), 16);
-
-  document.documentElement.style.setProperty("--accent", `${r} ${g} ${b}`);
-}
-
-// Permite ajustar altura del widget: ?h=120
-function applyHeight(h) {
-  if (!h) return;
-  const n = parseInt(h, 10);
-  if (Number.isFinite(n) && n >= 90 && n <= 180) {
-    document.documentElement.style.setProperty("--h", `${n}px`);
-  }
+function pickQuote(seedDay) {
+  // una por día (estable) → seedDay
+  // si prefieres random cada refresh: usa Math.random()
+  const idx = seedDay % QUOTES.length;
+  return QUOTES[idx];
 }
 
 (function init() {
-  const name = safeName(qp("name", "Alex"));
-  const mode = (qp("mode", "daily") || "daily").toLowerCase(); // daily | random
-  const badge = (qp("badge", "M33") || "M33").toUpperCase().slice(0, 8);
+  const name = getParam("name") || DEFAULT_NAME;
+  const start = getParam("start") || DEFAULT_START;
 
-  const transparent = qp("transparent", "0") === "1";
-  const theme = (qp("theme", "auto") || "auto").toLowerCase(); // auto | dark | light
-  const accent = qp("accent", null); // hex
-  const h = qp("h", null);
+  const day = calcDayNumber(start);
+  const greeting = getGreetingByHour();
 
-  applyTransparent(transparent);
-  applyTheme(theme);
-  applyAccent(accent);
-  applyHeight(h);
+  const badge = document.getElementById("badgeDay");
+  const h1 = document.getElementById("greeting");
+  const quote = document.getElementById("quote");
 
-  const now = new Date();
-  const greet = greetingForHour(now.getHours());
-
-  document.getElementById("kicker").textContent = "MÉTODO 33";
-  document.getElementById("title").textContent = `${greet}, ${name}.`;
-  document.getElementById("subtitle").textContent = pickPhrase(name, mode);
-  document.getElementById("pill").textContent = badge;
+  badge.textContent = `DÍA ${day}`;
+  h1.textContent = `${greeting}, ${name} 👋`;
+  quote.textContent = pickQuote(day);
 })();
