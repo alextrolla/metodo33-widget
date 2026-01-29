@@ -1,144 +1,158 @@
-/* ====== Base: transparente para que Notion sea el fondo ====== */
-html, body {
-  margin: 0;
-  padding: 0;
-  background: transparent !important;
-  color: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
-               "SF Pro Text", "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-               "Segoe UI Emoji";
+:root{
+  --txt: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.72);
+  --soft: rgba(255,255,255,.10);
+  --soft2: rgba(255,255,255,.14);
+
+  /* Toque marca granate */
+  --brand1: rgba(170, 30, 70, .35);
+  --brand2: rgba(255, 50, 110, .18);
+  --pill: rgba(170, 30, 70, .92);
 }
 
-/* Contenedor responsive (móvil primero) */
+* { box-sizing: border-box; }
+
+html, body{
+  width: 100%;
+  height: 100%;
+  background: transparent; /* clave: transparente */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Evita que en Notion el iframe quede muy bajito */
+body { min-height: 140px; }
+
 .wrap{
   width: 100%;
-  max-width: 760px;
-  padding: 10px;
-  box-sizing: border-box;
+  padding: 12px;
+  background: transparent;
 }
 
-/* ====== Loader premium ====== */
-.hidden { display: none !important; }
-
-.loader{
-  width: 100%;
-}
-
-.loaderCard{
-  position: relative;
-  overflow: hidden;
+/* Card (transparente, no bloque negro) */
+.card{
+  width: min(820px, 100%);
   border-radius: 18px;
-  padding: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 16px 16px 14px;
+  color: var(--txt);
+
+  /* cristal */
+  background: linear-gradient(135deg, var(--brand1), rgba(255,255,255,.06), var(--brand2));
+  border: 1px solid var(--soft2);
+  box-shadow:
+    0 14px 36px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  /* que no “pinte” negro detrás */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+
+  position: relative;
+  overflow: hidden;
 }
 
-.shimmer{
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(160, 20, 55, .22) 35%,
-    rgba(255,255,255,0) 70%
-  );
-  transform: translateX(-120%);
-  animation: shimmer 1.05s infinite;
-}
-
-@keyframes shimmer{
-  100% { transform: translateX(120%); }
-}
-
-.bar{
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.10);
-  margin-top: 10px;
-}
-.w40{ width: 40%; margin-top: 0; }
-.w70{ width: 70%; }
-.w55{ width: 55%; }
-
-/* ====== Tarjeta estilo Apple / premium, fondo transparente “real” ====== */
-.card{
-  width: 100%;
-  border-radius: 18px;
-  padding: 16px;
-  box-sizing: border-box;
-
-  /* Glass */
-  background: linear-gradient(
-    135deg,
-    rgba(160, 20, 55, .20) 0%,
-    rgba(255,255,255,.06) 45%,
-    rgba(255,255,255,.02) 100%
-  );
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 12px 35px rgba(0,0,0,.32);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  animation: popIn .22s ease-out;
-}
-
-@keyframes popIn{
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* brillo suave */
+.card::before{
+  content:"";
+  position:absolute; inset:-40% -30% auto -30%;
+  height: 160%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 55%);
+  pointer-events:none;
 }
 
 .top{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .mini{
   font-size: 11px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  opacity: .78;
+  color: rgba(255,255,255,.78);
 }
 
 .pill{
   font-size: 12px;
   font-weight: 700;
-  padding: 6px 10px;
+  color: white;
+  background: var(--pill);
+  padding: 7px 10px;
   border-radius: 999px;
-  background: rgba(160, 20, 55, .75);
-  border: 1px solid rgba(255,255,255,.18);
-}
-
-.titleRow{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  box-shadow: 0 10px 22px rgba(170,30,70,.25);
 }
 
 .title{
   margin: 0;
-  font-size: 22px;
-  line-height: 1.15;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  text-shadow: 0 6px 20px rgba(0,0,0,.22);
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: .2px;
+  position: relative;
+  z-index: 1;
 }
 
 .subtitle{
-  margin: 10px 0 0;
+  margin: 6px 0 0;
   font-size: 14px;
   line-height: 1.35;
-  opacity: .90;
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
 }
 
-/* Ajuste móvil extra pequeño */
-@media (max-width: 380px){
-  .wrap{ padding: 8px; }
-  .title{ font-size: 20px; }
+/* Loader */
+.loader{
+  position: relative;
+  width: min(820px, 100%);
+  margin-bottom: 10px;
+}
+
+.loader.hidden{ display:none; }
+
+.loaderCard{
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid var(--soft);
+  background: rgba(255,255,255,.04);
+  overflow: hidden;
+  position: relative;
+}
+
+.shimmer{
+  position:absolute;
+  inset:-40%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+  transform: translateX(-30%);
+  animation: shimmer 1.1s infinite;
+}
+
+@keyframes shimmer{
+  0% { transform: translateX(-30%); }
+  100% { transform: translateX(30%); }
+}
+
+.bar{
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  margin: 10px 0;
+  position: relative;
+  z-index: 1;
+}
+.w45{ width: 45%; }
+.w55{ width: 55%; }
+.w75{ width: 75%; }
+
+/* Mobile tuning: que se vea perfecto en móvil */
+@media (max-width: 480px){
+  .wrap{ padding: 10px; }
+  .card{ border-radius: 16px; padding: 14px; }
+  .title{ font-size: 18px; }
   .subtitle{ font-size: 13px; }
 }
