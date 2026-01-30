@@ -1,41 +1,44 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="dark light" />
-    <title>M33 Widget</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Notion Greeting Widget</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-  <body class="preload">
-    <!-- INTRO / SPLASH -->
-    <div id="splash" class="splash" aria-hidden="true">
-      <div class="splashInner">
-        <div class="splashBadge">
-          <!-- Icono simple (puedes cambiarlo por tu logo en SVG si quieres) -->
-          <svg class="bolt" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-            <path d="M36 4 12 36h18l-2 24 24-32H34l2-24Z" fill="currentColor"/>
-          </svg>
-        </div>
-
-        <div class="splashTitle">MÉTODO 33</div>
-        <div class="splashSub">Cargando tu panel…</div>
-
-        <div class="splashBar">
-          <div class="splashBarFill"></div>
-        </div>
+<body>
+  <!-- LOADER -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loaderCard">
+      <div class="loaderTop">
+        <div class="pulseDot"></div>
+        <div class="loaderText">Cargando…</div>
       </div>
+      <div class="skeletonLine w80"></div>
+      <div class="skeletonLine w95"></div>
+      <div class="skeletonLine w70"></div>
     </div>
+  </div>
 
-    <!-- WIDGET -->
-    <main id="app" aria-live="polite">
-      <section class="card">
-        <h1 class="title" id="title">👋 Hola, Alex</h1>
-        <p class="subtitle" id="subtitle">Cargando frase…</p>
-      </section>
-    </main>
+  <!-- WIDGET -->
+  <main class="wrap" role="main">
+    <section class="card" aria-label="Saludo del Método 33">
+      <div class="row">
+        <div class="greeting" id="greeting">👋</div>
+        <div class="title" id="title">Buenos días</div>
+      </div>
 
-    <script src="./script.js"></script>
-  </body>
+      <div class="subtitle" id="subtitle">Hoy toca avanzar.</div>
+
+      <div class="quote" id="quote">
+        Cargando frase…
+      </div>
+
+      <div class="meta" id="meta"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>
