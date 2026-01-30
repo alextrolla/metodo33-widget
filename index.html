@@ -3,41 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Notion Greeting Widget</title>
+  <title>Greeting</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-  <!-- LOADER -->
-  <div id="loader" class="loader" aria-hidden="true">
-    <div class="loaderCard">
-      <div class="loaderTop">
-        <div class="pulseDot"></div>
-        <div class="loaderText">Cargando…</div>
-      </div>
-      <div class="skeletonLine w80"></div>
-      <div class="skeletonLine w95"></div>
-      <div class="skeletonLine w70"></div>
-    </div>
+  <div class="wrap" id="app">
+    <div class="line1" id="line1">👋</div>
+    <div class="line2" id="line2">Cargando…</div>
   </div>
-
-  <!-- WIDGET -->
-  <main class="wrap" role="main">
-    <section class="card" aria-label="Saludo del Método 33">
-      <div class="row">
-        <div class="greeting" id="greeting">👋</div>
-        <div class="title" id="title">Buenos días</div>
-      </div>
-
-      <div class="subtitle" id="subtitle">Hoy toca avanzar.</div>
-
-      <div class="quote" id="quote">
-        Cargando frase…
-      </div>
-
-      <div class="meta" id="meta"></div>
-    </section>
-  </main>
 
   <script src="script.js"></script>
 </body>
