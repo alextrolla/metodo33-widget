@@ -1,81 +1,98 @@
-:root{
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.72);
+/* === “No blanco en PC” (camufla el iframe con Notion) === */
+:root {
+  --notion-bg-dark: #0f0f10;
+  --notion-bg-light: #ffffff;
 
-  /* Marca granate (suave) */
-  --brandA: rgba(170, 30, 70, .28);
-  --brandB: rgba(255, 60, 120, .14);
-  --pill: rgba(170, 30, 70, .92);
-  --stroke: rgba(255,255,255,.14);
+  --card-radius: 18px;
+  --card-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.72);
+
+  /* toque marca granate */
+  --accent-1: rgba(160, 35, 75, 0.75);
+  --accent-2: rgba(120, 10, 45, 0.55);
+  --glass: rgba(255, 255, 255, 0.06);
 }
 
-* { box-sizing: border-box; }
-
-html, body{
+/* Tipografía “Apple-like” */
+html, body {
   margin: 0;
   padding: 0;
-  background: transparent !important; /* CLAVE */
-  width: 100%;
-  height: auto;
-  overflow: hidden; /* evita scroll raro dentro del embed */
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Recuadro */
-.card{
+/* Fondo del iframe según modo (esto evita el blanco en PC) */
+body {
+  background: var(--notion-bg-light);
+}
+@media (prefers-color-scheme: dark) {
+  body { background: var(--notion-bg-dark); }
+}
+
+/* Altura controlada para que el embed no “sobrante” se vea bien */
+#app {
+  box-sizing: border-box;
   width: 100%;
-  max-width: 820px;
-
-  border-radius: 18px;
-  padding: 16px;
-
-  color: var(--text);
-
-  /* SOLO el recuadro (glass + toque marca). No fondo de página. */
-  background: linear-gradient(135deg, var(--brandA), rgba(255,255,255,.06), var(--brandB));
-  border: 1px solid var(--stroke);
-  box-shadow: 0 14px 34px rgba(0,0,0,.26);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  /* sin márgenes externos */
-  margin: 0;
+  min-height: 190px;          /* altura mínima “bonita” */
+  padding: 14px 14px 18px;
+  display: grid;
+  place-items: start center;
 }
 
-.top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
+/* La tarjeta */
+.card {
+  width: min(720px, 100%);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  position: relative;
+
+  /* “glass” + gradiente marca */
+  background:
+    radial-gradient(1200px 400px at 10% 0%, var(--accent-1), transparent 55%),
+    radial-gradient(900px 340px at 90% 10%, var(--accent-2), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.10);
+
+  padding: 18px 18px 16px;
+}
+
+/* Top */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
 }
 
-.title{
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: .2px;
-  line-height: 1.2;
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: rgba(255,255,255,0.70);
 }
 
-.subtitle{
+/* Textos */
+.title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 10px 0 0;
   font-size: 14px;
   line-height: 1.35;
   color: var(--muted);
 }
 
-.pill{
-  font-size: 12px;
-  font-weight: 800;
-  color: white;
-  background: var(--pill);
-  padding: 7px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px){
-  .card{ border-radius: 16px; padding: 14px; }
-  .title{ font-size: 16px; }
-  .subtitle{ font-size: 13px; }
+/* Responsive móvil */
+@media (max-width: 420px) {
+  #app { padding: 12px; min-height: 180px; }
+  .card { padding: 16px; }
+  .title { font-size: 20px; }
+  .subtitle { font-size: 13.5px; }
 }
