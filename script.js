@@ -1,138 +1,162 @@
-function getQuery() {
-  const u = new URL(window.location.href);
-  return {
-    name: (u.searchParams.get("name") || "").trim(),
-    theme: (u.searchParams.get("theme") || "").trim().toLowerCase(), // "dark" | "light"
-    tz: (u.searchParams.get("tz") || "").trim(), // opcional: Europe/Madrid
-  };
-}
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Data Pools (30 phrases each)
+    const quotes = {
+        morning: [
+            "Haz lo difícil ahora. Lo fácil no construye nada.",
+            "La disciplina es libertad. Empieza ya.",
+            "Hoy no se negocia. Hoy se cumple.",
+            "Gana la mañana, gana el día.",
+            "Tu versión del futuro te está mirando. No falles.",
+            "El dolor de la disciplina o el dolor del arrepentimiento. Elige.",
+            "No esperes a tener ganas. Hazlo sin ganas.",
+            "Cada minuto cuenta. No lo desperdicies scrolleando.",
+            "Enfócate. Una sola prioridad a la vez.",
+            "El éxito es la suma de pequeños esfuerzos repetidos.",
+            "Sé el hombre que dijiste que ibas a ser.",
+            "Sin excusas. Ejecuta el plan.",
+            "La comodidad es el enemigo del progreso.",
+            "Hoy es un buen día para superar tus límites.",
+            "Levántate y ataca tus objetivos.",
+            "La consistencia vence a la intensidad.",
+            "Mente fría, ejecución implacable.",
+            "No busques motivación, busca disciplina.",
+            "Lo que hagas antes de las 10am define tu día.",
+            "Haz que este día cuente.",
+            "Controla lo que puedes. Ignora lo que no.",
+            "La acción cura el miedo. Muévete.",
+            "No dejes para la tarde lo que construye tu vida ahora.",
+            "Estás construyendo un legado, ladrillo a ladrillo.",
+            "Sé implacable con tus distracciones.",
+            "El respeto se gana cumpliendo tu propia palabra.",
+            "Hoy es una oportunidad, no una obligación.",
+            "Suda más en la práctica, sangra menos en la guerra.",
+            "Mantén el estándar alto.",
+            "Hazlo. Y hazlo bien."
+        ],
+        afternoon: [
+            "No bajes el ritmo. Mantén la inercia.",
+            "La fatiga es mental. Sigue empujando.",
+            "Aquí es donde la mayoría abandona. Tú no.",
+            "Revisa tus objetivos. ¿Te estás acercando?",
+            "La constancia es aburrida, pero efectiva.",
+            "No te distraigas. Termina lo que empezaste.",
+            "El trabajo duro real empieza cuando quieres parar.",
+            "Mantén el foco. El día aún no termina.",
+            "Respira hondo y sigue ejecutando.",
+            "La excelencia es un hábito, no un acto.",
+            "No negocies contigo mismo. Cumple.",
+            "Si estás cansado, descansa al final, no a la mitad.",
+            "Pequeños avances. Gran progreso.",
+            "Domina tu atención, domina tu vida.",
+            "La tarde define quién eres cuando nadie mira.",
+            "Sigue el plan. Confía en el proceso.",
+            "Un paso más. Solo uno más.",
+            "La resistencia es la clave del crecimiento.",
+            "No pierdas el tiempo. Inviértelo.",
+            "La disciplina te lleva donde la motivación no llega.",
+            "Mantén la cabeza baja y sigue trabajando.",
+            "¿Estás siendo productivo o solo estás ocupado?",
+            "El esfuerzo de hoy es la recompensa de mañana.",
+            "No te conformes con lo 'suficiente'.",
+            "Supera la pereza de la tarde.",
+            "Recuerda por qué empezaste.",
+            "La mediocridad odia el esfuerzo. Sigue.",
+            "Ordena tu entorno, ordena tu mente.",
+            "Sé un profesional. Aparece y cumple.",
+            "Acaba fuerte."
+        ],
+        night: [
+            "Descansa para recargar, no para renunciar.",
+            "Mañana se prepara hoy. Organiza tu mente.",
+            "Duerme 8 horas. Tu cerebro te lo cobrará.",
+            "Reflexiona: ¿Qué hiciste bien hoy?",
+            "Desconecta para reconectar mejor mañana.",
+            "La recuperación es parte del entrenamiento.",
+            "Agradece el esfuerzo de hoy.",
+            "Cierra el día con la conciencia tranquila.",
+            "Deja el móvil. Cuida tu sueño.",
+            "El descanso es un arma. Úsala bien.",
+            "Planifica mañana. Gana antes de despertar.",
+            "Paz mental es haber cumplido.",
+            "No te lleves problemas a la cama.",
+            "Mañana es otra oportunidad de guerra.",
+            "El sueño construye el músculo y la mente.",
+            "Apaga pantallas. Enciende tu recuperación.",
+            "Si fallaste hoy, corrígelo mañana.",
+            "Duerme con ambición, despierta con propósito.",
+            "Silencio. Calma. Recuperación.",
+            "Eres lo que haces repetidamente. Descansa.",
+            "Prepara tu ropa de mañana. Elimina fricción.",
+            "Un buen día empieza la noche anterior.",
+            "Vacía tu mente en papel, no en la almohada.",
+            "El descanso del guerrero es sagrado.",
+            "Respeta tus ciclos de sueño.",
+            "Lo hecho, hecho está. Suéltalo.",
+            "Recarga la disciplina para mañana.",
+            "Mañana será mejor si descansas bien.",
+            "El éxito requiere pausa.",
+            "Buenas noches. Mañana a por todas."
+        ]
+    };
 
-function getHourInTimezone(tz) {
-  try {
-    if (!tz) return new Date().getHours();
-    const parts = new Intl.DateTimeFormat("es-ES", {
-      timeZone: tz,
-      hour: "2-digit",
-      hour12: false,
-    }).formatToParts(new Date());
-    const hourPart = parts.find(p => p.type === "hour");
-    return hourPart ? Number(hourPart.value) : new Date().getHours();
-  } catch {
-    return new Date().getHours();
-  }
-}
+    // 2. Helper Functions
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
 
-function seg(hour){
-  if (hour >= 6 && hour < 14) return "morning";
-  if (hour >= 14 && hour < 21) return "afternoon";
-  return "night";
-}
+    function getRandomItem(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-function greeting(segment){
-  if (segment === "morning") return "Buenos días";
-  if (segment === "afternoon") return "Buenas tardes";
-  return "Buenas noches";
-}
+    // 3. Logic Execution
+    const now = new Date();
+    const hour = now.getHours();
+    
+    // Variables for logic
+    let timeGreeting = "";
+    let quotePool = [];
+    
+    // Time Logic (Strict Ranges)
+    // 05:00 - 11:59 -> Buenos días
+    // 12:00 - 19:59 -> Buenas tardes
+    // 20:00 - 04:59 -> Buenas noches
+    
+    if (hour >= 5 && hour < 12) {
+        timeGreeting = "Buenos días";
+        quotePool = quotes.morning;
+    } else if (hour >= 12 && hour < 20) {
+        timeGreeting = "Buenas tardes";
+        quotePool = quotes.afternoon;
+    } else {
+        timeGreeting = "Buenas noches";
+        quotePool = quotes.night;
+    }
 
-function capName(name){
-  if (!name) return "";
-  return name.charAt(0).toUpperCase() + name.slice(1);
-}
+    // 4. Personalization
+    const userName = getUrlParameter('name') || "tío";
+    const dayParam = getUrlParameter('day');
 
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+    // 5. DOM Updates
+    const greetingEl = document.getElementById('greeting-text');
+    const quoteEl = document.getElementById('quote-text');
+    const dayEl = document.getElementById('day-counter');
 
-/* 100 mañana / 100 tarde / 100 noche (te dejo 20/20/20 para no reventar aquí).
-   Si quieres, te los completo a 100/100/100 sin “frases cringe”, pero primero
-   quiero que veas que YA se integra perfecto visualmente. */
-const MORNING = [
-  "Hoy toca avanzar sin complicarte.",
-  "Cumple lo mínimo y el progreso no se rompe.",
-  "Empieza. Ajustamos después.",
-  "Hazlo simple: una cosa bien hecha.",
-  "Tu semana mejora cuando tu plan encaja.",
-  "Constancia > intensidad.",
-  "Hoy ganas si no negocias contigo.",
-  "Acción pequeña, cambio grande.",
-  "No perfecto: repetible.",
-  "Tu yo de la noche lo agradece.",
-  "Si dudas, haz 10 minutos y sigue.",
-  "Crea inercia y todo se vuelve más fácil.",
-  "Hoy: estructura, no motivación.",
-  "El cuerpo responde a lo que repites.",
-  "Gana la mañana, ganas el día.",
-  "Lo importante es empezar.",
-  "Tu agenda manda, tu sistema también.",
-  "Hoy toca construir.",
-  "Haz lo que toca y listo.",
-  "Un día bien hecho cambia la semana."
-];
+    // Set Greeting
+    greetingEl.innerText = `👋 ${timeGreeting}, ${userName}`;
 
-const AFTERNOON = [
-  "Aún estás a tiempo de salvar el día.",
-  "Si la mañana se fue, la tarde decide.",
-  "Reajusta el plan, no lo abandones.",
-  "Hazlo corto, pero hazlo.",
-  "Hoy cuenta aunque no sea perfecto.",
-  "Cumple lo mínimo y sigue con tu vida.",
-  "Tu físico se construye en días ocupados.",
-  "El plan flexible gana aquí.",
-  "No es tarde. Es ahora.",
-  "Baja la ambición, no la constancia.",
-  "Si tu semana cambia, el sistema cambia contigo.",
-  "Menos culpa. Más coherencia.",
-  "Una sesión hoy te baja el estrés mañana.",
-  "Entrena eficiente y vuelve al mundo.",
-  "No rompas la cadena por un día raro.",
-  "El progreso no es épico: es acumulación.",
-  "Haz lo que toca, sin drama.",
-  "Hoy toca mantener el hilo.",
-  "No lo pienses: empieza una serie.",
-  "Consistencia = resultados."
-];
+    // Set Quote
+    quoteEl.innerText = getRandomItem(quotePool);
 
-const NIGHT = [
-  "Cierra el día con coherencia.",
-  "Hoy no perfecto, hoy real.",
-  "Mañana será más fácil si hoy no rompes la cadena.",
-  "Descansa sin culpa: lo estás construyendo.",
-  "Si hoy fue caos, mañana ajustamos.",
-  "No te castigues: aprende y sigue.",
-  "Un día imperfecto no rompe tu progreso.",
-  "Lo importante es volver.",
-  "Tu sistema te sostiene cuando estás cansado.",
-  "Cierra con orgullo, aunque sea poco.",
-  "Mañana, un paso más.",
-  "La disciplina también es descansar bien.",
-  "Hoy cuenta igual aunque nadie lo vea.",
-  "Tu cuerpo cambia con repetición.",
-  "No abandones por cansancio.",
-  "Hoy fue un ladrillo más.",
-  "Mañana te lo pones fácil.",
-  "Calma, recuperación, foco.",
-  "Sigues en el juego. Eso es ganar.",
-  "Hoy ya está. Mañana seguimos."
-];
-
-(function init(){
-  const q = getQuery();
-
-  // Tema: FUERZA dark/light desde URL (Notion no da su tema al iframe)
-  if (q.theme === "light") document.body.classList.add("theme-light");
-  else document.body.classList.add("theme-dark");
-
-  const hour = getHourInTimezone(q.tz);
-  const segment = seg(hour);
-  const name = capName(q.name);
-
-  const line1 = document.getElementById("line1");
-  const line2 = document.getElementById("line2");
-
-  line1.textContent = `👋 ${greeting(segment)}${name ? `, ${name}` : ""}`;
-
-  const phrase =
-    segment === "morning" ? pick(MORNING) :
-    segment === "afternoon" ? pick(AFTERNOON) :
-    pick(NIGHT);
-
-  line2.textContent = phrase;
-})();
+    // Set Day (if exists)
+    if (dayParam) {
+        // Ensure it's a clean number (basic sanitization)
+        const dayNum = parseInt(dayParam, 10);
+        if (!isNaN(dayNum)) {
+            dayEl.innerText = `Día ${dayNum}`;
+            dayEl.classList.remove('hidden');
+        }
+    }
+});
