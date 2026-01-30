@@ -1,23 +1,24 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Widget</title>
-  <link rel="stylesheet" href="/styles.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>M33 Widget</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app" aria-live="polite">
+      <section class="card">
+        <div class="top">
+          <div class="kicker" id="kicker">HOY</div>
+        </div>
 
-<body>
-  <!-- SOLO EL RECUADRO -->
-  <section class="card" role="group" aria-label="Saludo">
-    <div class="top">
-      <div class="title" id="greeting">👋 Buenas noches, Alex</div>
-      <div class="pill" id="pillDay">DÍA 0</div>
-    </div>
+        <h1 class="title" id="title">👋 Buenas, Alex</h1>
+        <p class="subtitle" id="subtitle">Cargando frase…</p>
+      </section>
+    </main>
 
-    <div class="subtitle" id="quote">Empieza por el primer set. Lo demás viene solo.</div>
-  </section>
-
-  <script src="/script.js" defer></script>
-</body>
+    <script src="./script.js"></script>
+  </body>
 </html>
