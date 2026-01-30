@@ -7,14 +7,31 @@
     <title>M33 Widget</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <main id="app" aria-live="polite">
-      <section class="card">
-        <div class="top">
-          <div class="kicker" id="kicker">HOY</div>
+
+  <body class="preload">
+    <!-- INTRO / SPLASH -->
+    <div id="splash" class="splash" aria-hidden="true">
+      <div class="splashInner">
+        <div class="splashBadge">
+          <!-- Icono simple (puedes cambiarlo por tu logo en SVG si quieres) -->
+          <svg class="bolt" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M36 4 12 36h18l-2 24 24-32H34l2-24Z" fill="currentColor"/>
+          </svg>
         </div>
 
-        <h1 class="title" id="title">👋 Buenas, Alex</h1>
+        <div class="splashTitle">MÉTODO 33</div>
+        <div class="splashSub">Cargando tu panel…</div>
+
+        <div class="splashBar">
+          <div class="splashBarFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDGET -->
+    <main id="app" aria-live="polite">
+      <section class="card">
+        <h1 class="title" id="title">👋 Hola, Alex</h1>
         <p class="subtitle" id="subtitle">Cargando frase…</p>
       </section>
     </main>
