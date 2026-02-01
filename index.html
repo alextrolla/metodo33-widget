@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- IMPORTANTE: ayuda a que el motor no “aclare” estilos -->
     <meta name="color-scheme" content="dark" />
 
     <title>Widget M33</title>
@@ -15,7 +14,11 @@
       <section class="card" role="group" aria-label="Saludo y frase motivadora">
         <div class="card-inner">
           <div class="title" id="title">👋 Buenas,</div>
-          <div class="subtitle" id="subtitle">Hoy toca sumar.</div>
+
+          <!-- aria-live para que el cambio de frase sea "suave" en accesibilidad -->
+          <div class="subtitle" id="subtitle" aria-live="polite">
+            Hoy toca sumar.
+          </div>
         </div>
       </section>
     </main>
