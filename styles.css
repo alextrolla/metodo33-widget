@@ -1,141 +1,182 @@
-/* ==========
-   Fondo del iframe SIEMPRE transparente
-   ========== */
-html, body {
-  background: transparent !important;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  color: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Contenedor sin fondo */
-.wrap {
-  background: transparent !important;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 120px;
-}
-
-/* ==========
-   La caja SIEMPRE oscura (estática)
-   ========== */
-.card {
-  width: min(920px, calc(100vw - 32px));
-  border-radius: 18px;
-
-  background: rgba(12, 12, 14, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-
-  box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.22),
-    0 2px 10px rgba(0, 0, 0, 0.18);
-
-  position: relative;
-  overflow: hidden;
-
-  /* Entrada premium */
-  animation: enter-premium 520ms cubic-bezier(.2,.9,.2,1) both;
-}
-
-/* Toque marca (granate/rosa) suave */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(800px 240px at 15% 20%, rgba(168, 36, 76, 0.35), transparent 55%),
-    radial-gradient(900px 260px at 85% 10%, rgba(255, 0, 84, 0.16), transparent 60%);
-  pointer-events: none;
-}
-
-/* ===== Shine premium cada 30s ===== */
-.card::after {
-  content:"";
-  position:absolute;
-  inset:-2px;
-  border-radius:22px;
-  pointer-events:none;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.10) 25%,
-    rgba(255,255,255,0.22) 35%,
-    rgba(255,255,255,0.10) 45%,
-    transparent 70%
-  );
-  opacity:0;
-  transform: translateX(-70%);
-  animation: sheen-30s 30s linear infinite;
-}
-
-@keyframes sheen-30s {
-  0%   { opacity:0; transform: translateX(-70%); }
-  2.5% { opacity:0.9; }
-  10%  { opacity:0; transform: translateX(70%); }
-  100% { opacity:0; transform: translateX(70%); }
-}
-
-.card-inner {
-  position: relative;
-  padding: 18px 20px;
-}
-
-/* Tipografía estilo Apple/limpio */
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin: 0 0 8px 0;
-  color: rgba(255, 255, 255, 0.96);
-}
-
-.subtitle {
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-
-  transition: opacity 220ms ease, transform 220ms ease;
-  opacity: 0.92;
-}
-
-.subtitle.is-fading {
-  opacity: 0;
-  transform: translateY(2px);
-}
-
-/* Entrada premium */
-@keyframes enter-premium {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.99);
-    filter: blur(6px);
+(() => {
+  // ---------------- Helpers ----------------
+  function getParam(name, fallback = "") {
+    const url = new URL(window.location.href);
+    const v = url.searchParams.get(name);
+    return (v && v.trim()) ? v.trim() : fallback;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
 
-/* Responsive */
-@media (max-width: 480px) {
-  .wrap { min-height: 110px; }
-  .card-inner { padding: 16px 16px; }
-  .title { font-size: 20px; }
-  .subtitle { font-size: 14px; }
-}
+  function getBucketByHour(hour) {
+    // mañana 6-12, tarde 12-20, noche 20-6
+    if (hour >= 6 && hour < 12) return "morning";
+    if (hour >= 12 && hour < 20) return "afternoon";
+    return "night";
+  }
+
+  function getGreetingByBucket(bucket) {
+    if (bucket === "morning") return "Buenos días";
+    if (bucket === "afternoon") return "Buenas tardes";
+    return "Buenas noches";
+  }
+
+  function pickRandom(arr, avoid) {
+    if (!Array.isArray(arr) || arr.length === 0) return "";
+    if (arr.length === 1) return arr[0];
+
+    let tries = 0;
+    let candidate = arr[Math.floor(Math.random() * arr.length)];
+    while (candidate === avoid && tries < 12) {
+      candidate = arr[Math.floor(Math.random() * arr.length)];
+      tries++;
+    }
+    return candidate;
+  }
+
+  // ---------------- Frases ----------------
+  const QUOTES = {
+    morning: [
+      "Haz lo difícil ahora. Lo fácil no construye nada.",
+      "La disciplina es libertad. Empieza ya.",
+      "Hoy no se negocia. Hoy se cumple.",
+      "Gana la mañana, gana el día.",
+      "Tu versión del futuro te está mirando. No falles.",
+      "El dolor de la disciplina o el dolor del arrepentimiento. Elige.",
+      "No esperes a tener ganas. Hazlo sin ganas.",
+      "Cada minuto cuenta. No lo desperdicies scrolleando.",
+      "Enfócate. Una sola prioridad a la vez.",
+      "El éxito es la suma de pequeños esfuerzos repetidos.",
+      "Sé el hombre que dijiste que ibas a ser.",
+      "Sin excusas. Ejecuta el plan.",
+      "La comodidad es el enemigo del progreso.",
+      "Hoy es un buen día para superar tus límites.",
+      "Levántate y ataca tus objetivos.",
+      "La consistencia vence a la intensidad.",
+      "Mente fría, ejecución implacable.",
+      "No busques motivación, busca disciplina.",
+      "Lo que hagas antes de las 10am define tu día.",
+      "Haz que este día cuente.",
+      "Controla lo que puedes. Ignora lo que no.",
+      "La acción cura el miedo. Muévete.",
+      "No dejes para la tarde lo que construye tu vida ahora.",
+      "Estás construyendo un legado, ladrillo a ladrillo.",
+      "Sé implacable con tus distracciones.",
+      "El respeto se gana cumpliendo tu propia palabra.",
+      "Hoy es una oportunidad, no una obligación.",
+      "Suda más en la práctica, sangra menos en la guerra.",
+      "Mantén el estándar alto.",
+      "Hazlo. Y hazlo bien."
+    ],
+    afternoon: [
+      "No bajes el ritmo. Mantén la inercia.",
+      "La fatiga es mental. Sigue empujando.",
+      "Aquí es donde la mayoría abandona. Tú no.",
+      "Revisa tus objetivos. ¿Te estás acercando?",
+      "La constancia es aburrida, pero efectiva.",
+      "No te distraigas. Termina lo que empezaste.",
+      "El trabajo duro real empieza cuando quieres parar.",
+      "Mantén el foco. El día aún no termina.",
+      "Respira hondo y sigue ejecutando.",
+      "La excelencia es un hábito, no un acto.",
+      "No negocies contigo mismo. Cumple.",
+      "Si estás cansado, descansa al final, no a la mitad.",
+      "Pequeños avances. Gran progreso.",
+      "Domina tu atención, domina tu vida.",
+      "La tarde define quién eres cuando nadie mira.",
+      "Sigue el plan. Confía en el proceso.",
+      "Un paso más. Solo uno más.",
+      "La resistencia es la clave del crecimiento.",
+      "No pierdas el tiempo. Inviértelo.",
+      "La disciplina te lleva donde la motivación no llega.",
+      "Mantén la cabeza baja y sigue trabajando.",
+      "¿Estás siendo productivo o solo estás ocupado?",
+      "El esfuerzo de hoy es la recompensa de mañana.",
+      "No te conformes con lo 'suficiente'.",
+      "Supera la pereza de la tarde.",
+      "Recuerda por qué empezaste.",
+      "La mediocridad odia el esfuerzo. Sigue.",
+      "Ordena tu entorno, ordena tu mente.",
+      "Sé un profesional. Aparece y cumple.",
+      "Acaba fuerte."
+    ],
+    night: [
+      "Descansa para recargar, no para renunciar.",
+      "Mañana se prepara hoy. Organiza tu mente.",
+      "Duerme 8 horas. Tu cerebro te lo cobrará.",
+      "Reflexiona: ¿Qué hiciste bien hoy?",
+      "Desconecta para reconectar mejor mañana.",
+      "La recuperación es parte del entrenamiento.",
+      "Agradece el esfuerzo de hoy.",
+      "Cierra el día con la conciencia tranquila.",
+      "Deja el móvil. Cuida tu sueño.",
+      "El descanso es un arma. Úsala bien.",
+      "Planifica mañana. Gana antes de despertar.",
+      "Paz mental es haber cumplido.",
+      "No te lleves problemas a la cama.",
+      "Mañana es otra oportunidad de guerra.",
+      "El sueño construye el músculo y la mente.",
+      "Apaga pantallas. Enciende tu recuperación.",
+      "Si fallaste hoy, corrígelo mañana.",
+      "Duerme con ambición, despierta con propósito.",
+      "Silencio. Calma. Recuperación.",
+      "Eres lo que haces repetidamente. Descansa.",
+      "Prepara tu ropa de mañana. Elimina fricción.",
+      "Un buen día empieza la noche anterior.",
+      "Vacía tu mente en papel, no en la almohada.",
+      "El descanso del guerrero es sagrado.",
+      "Respeta tus ciclos de sueño.",
+      "Lo hecho, hecho está. Suéltalo.",
+      "Recarga la disciplina para mañana.",
+      "Mañana será mejor si descansas bien.",
+      "El éxito requiere pausa.",
+      "Buenas noches. Mañana a por todas."
+    ]
+  };
+
+  // ---------------- DOM ----------------
+  const titleEl = document.getElementById("title");
+  const subEl = document.getElementById("subtitle");
+
+  // Nombre por URL: ?name=Gabriel
+  const name = getParam("name", "Gabriel");
+
+  let currentQuote = "";
+
+  function renderGreetingNow() {
+    const now = new Date();
+    const bucket = getBucketByHour(now.getHours());
+    const greeting = getGreetingByBucket(bucket);
+    titleEl.textContent = `👋 ${greeting}, ${name}`;
+    return bucket;
+  }
+
+  function setQuote(text) {
+    currentQuote = text;
+    subEl.textContent = text;
+  }
+
+  function rotateQuoteForCurrentBucket() {
+    const bucket = renderGreetingNow(); // recalcula saludo y bucket SIEMPRE
+    const next = pickRandom(QUOTES[bucket], currentQuote);
+    if (!next || next === currentQuote) return;
+
+    subEl.classList.add("is-fading");
+    setTimeout(() => {
+      setQuote(next);
+      subEl.classList.remove("is-fading");
+    }, 220);
+  }
+
+  // ---------------- INIT ----------------
+  const initialBucket = renderGreetingNow();
+  setQuote(pickRandom(QUOTES[initialBucket], null));
+
+  // ---------------- Sync premium ----------------
+  // Reflejo (CSS): 30s
+  // Frase: 60s, pero cambia cuando el reflejo está pasando (cada 2 reflejos)
+  const QUOTE_PERIOD_MS = 60000;
+  const SHEEN_PASS_DELAY_MS = 1500; // coincide con el "paso" del brillo (2.5%–10% de 30s)
+
+  setInterval(() => {
+    setTimeout(rotateQuoteForCurrentBucket, SHEEN_PASS_DELAY_MS);
+  }, QUOTE_PERIOD_MS);
+})();
