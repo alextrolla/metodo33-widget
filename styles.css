@@ -1,130 +1,106 @@
-/* ========== RESET / BASE ========== */
-* { box-sizing: border-box; }
-html, body {
-  width: 100%;
-  height: 100%;
+/* ==========
+   CLAVE: fondo del iframe TRANSPARENTE siempre
+   ========== */
+html,
+body {
+  background: transparent !important;
   margin: 0;
-  background: transparent !important; /* CLAVE: nada de blanco/negro */
-  overflow: hidden;
+  padding: 0;
 }
 
-:root{
-  /* Marca (granate oscuro) */
-  --brand-1: #7a0f2a;   /* granate */
-  --brand-2: #b3123a;   /* acento */
-  --ink: rgba(255,255,255,0.92);
-  --sub: rgba(255,255,255,0.72);
-
-  /* Card look: por defecto lo hacemos “universal” para que sirva en fondo negro o blanco */
-  --card-bg: rgba(18,18,20,0.55);
-  --card-border: rgba(255,255,255,0.14);
-
-  /* Si el fondo donde lo pones es blanco, esto sigue viéndose bien por el borde + blur */
-  --shadow: 0 18px 50px rgba(0,0,0,0.25);
+/* Evita “blancos raros” y respeta transparencia en embeds */
+body {
+  color: #fff;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Si el usuario fuerza theme=light en URL, lo ajustamos desde JS con [data-theme="light"] */
-html[data-theme="light"]{
-  --ink: rgba(10,10,12,0.92);
-  --sub: rgba(10,10,12,0.70);
-  --card-bg: rgba(255,255,255,0.70);
-  --card-border: rgba(10,10,12,0.12);
-  --shadow: 0 18px 50px rgba(0,0,0,0.18);
+/* Contenedor sin fondo */
+.wrap {
+  background: transparent !important;
+  padding: 0;
+  margin: 0;
+
+  /* centra el widget */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* altura justa para Notion */
+  min-height: 120px;
 }
 
-/* ========== LAYOUT ========== */
-.wrap{
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  padding: 14px; /* margen interno para que Notion no lo “corte” */
-}
-
-/* ========== CARD ========== */
-.card{
-  width: min(720px, 96vw);
+/* ==========
+   LA CAJA (card) SIEMPRE OSCURA
+   ========== */
+.card {
+  width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
-  padding: 18px 18px 16px 18px;
-  background:
-    radial-gradient(120% 140% at 12% 10%,
-      color-mix(in srgb, var(--brand-2) 26%, transparent),
-      transparent 58%),
-    radial-gradient(120% 140% at 92% 20%,
-      color-mix(in srgb, var(--brand-1) 22%, transparent),
-      transparent 60%),
-    var(--card-bg);
 
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* Fondo negro fijo */
+  background: rgba(12, 12, 14, 0.92);
+
+  /* Borde fino elegante (para que se vea bien en fondo blanco o negro) */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  /* sombra suave (que funcione sobre blanco también) */
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.22),
+    0 2px 10px rgba(0, 0, 0, 0.18);
 
   position: relative;
   overflow: hidden;
-
-  /* Animación de entrada (suave, pro) */
-  transform: translateY(6px);
-  opacity: 0;
-  animation: cardIn 420ms ease forwards;
 }
 
-@keyframes cardIn{
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.card__top{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.greeting{
-  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Display", "SF Pro Text", "Inter", Segoe UI, Roboto, Helvetica, Arial;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  font-size: clamp(18px, 2.2vw, 22px);
-  line-height: 1.18;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.card__bottom{
-  margin-top: 8px;
-}
-
-.quote{
-  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Inter", Segoe UI, Roboto, Helvetica, Arial;
-  font-weight: 500;
-  color: var(--sub);
-  font-size: clamp(13px, 1.8vw, 15px);
-  line-height: 1.35;
-}
-
-/* Shine pro */
-.shine{
+/* Toque marca (granate/rosa) SIN cambiar el fondo a claro */
+.card::before {
+  content: "";
   position: absolute;
-  inset: -60%;
-  background: linear-gradient(120deg,
-    transparent 40%,
-    rgba(255,255,255,0.10) 50%,
-    transparent 60%);
-  transform: translateX(-40%) rotate(12deg);
-  animation: shine 3.6s ease-in-out infinite;
+  inset: 0;
+  background:
+    radial-gradient(800px 240px at 15% 20%, rgba(168, 36, 76, 0.35), transparent 55%),
+    radial-gradient(900px 260px at 85% 10%, rgba(255, 0, 84, 0.16), transparent 60%);
   pointer-events: none;
 }
 
-@keyframes shine{
-  0%   { transform: translateX(-45%) rotate(12deg); opacity: 0.0; }
-  20%  { opacity: 0.55; }
-  50%  { transform: translateX(10%) rotate(12deg); opacity: 0.20; }
-  100% { transform: translateX(45%) rotate(12deg); opacity: 0.0; }
+.card-inner {
+  position: relative;
+  padding: 18px 20px;
 }
 
-/* Mobile tuning */
-@media (max-width: 420px){
-  .card{ padding: 16px 16px 14px 16px; border-radius: 16px; }
+/* Tipografía estilo “Apple/Notion limpio” */
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Responsive para móvil */
+@media (max-width: 480px) {
+  .wrap {
+    min-height: 110px;
+  }
+  .card-inner {
+    padding: 16px 16px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .subtitle {
+    font-size: 14px;
+  }
 }
