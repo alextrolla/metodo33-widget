@@ -1,215 +1,194 @@
-/* =========================================
-   FONDO TRANSPARENTE TOTAL (Notion embed)
-========================================= */
-html,
-body {
+/* =========================
+   RESET + TRANSPARENCIA REAL
+   ========================= */
+:root{
+  /* ✅ ROSADO real (según tus imágenes) */
+  --brand: 236, 94, 99;
+
+  --card-bg: rgba(12, 12, 14, 0.92);
+  --card-border: rgba(255,255,255,0.10);
+
+  --txt-1: rgba(255,255,255,0.96);
+  --txt-2: rgba(255,255,255,0.72);
+}
+
+html, body{
   background: transparent !important;
   margin: 0;
   padding: 0;
 }
 
-body {
+body{
   color: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    "Segoe UI", Roboto, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
-
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Display","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,
+    "Apple Color Emoji","Segoe UI Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* =========================================
-   CONTENEDOR CENTRADO SIN FONDO
-========================================= */
-.wrap {
+/* Contenedor sin fondo */
+.wrap{
   background: transparent !important;
   padding: 0;
   margin: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
 
-  min-height: 120px;
+  /* evita recortes raros en Notion */
+  min-height: 130px;
 }
 
-/* =========================================
-   CAJA OSCURA PREMIUM FIJA (SIEMPRE)
-========================================= */
-.card {
+/* =========================
+   CARD (siempre oscura)
+   ========================= */
+.card{
   width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
 
-  /* Caja negra fija */
-  background: rgba(10, 10, 12, 0.92);
+  /* Caja oscura fija (como Notion dark) */
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
 
-  /* Borde rosado premium */
-  border: 1px solid rgba(255, 80, 120, 0.20);
-
-  /* Sin sombra exterior */
+  /* ✅ SIN SOMBRA (pedido) */
   box-shadow: none;
 
   position: relative;
   overflow: hidden;
 
-  /* Entrada ultra premium */
-  animation: enter-premium 650ms cubic-bezier(.2,.9,.2,1) both;
+  /* ✅ Entrada ultra premium */
+  animation: enter-ultra 780ms cubic-bezier(.12,.9,.18,1) both;
 }
 
-/* =========================================
-   GLOW ROSADO EXACTO COMO TU WEB
-========================================= */
-.card::before {
+/* =========================
+   DIFUMINADO "TIPO BANNER"
+   - empieza suave y se vuelve intenso
+   - usando tu rosado real
+   ========================= */
+.card::before{
   content: "";
   position: absolute;
   inset: 0;
 
-  /* DIFUMINADO tipo banner: largo + suave, NO “dos manchas” */
   background:
-    /* capa principal: niebla rosada extendida */
+    /* niebla principal (izq->centro) */
     radial-gradient(
-      1200px 420px at 18% 35%,
-      rgba(194, 43, 62, 0.55),
+      1200px 520px at 22% 55%,
+      rgba(var(--brand), 0.70),
+      rgba(var(--brand), 0.28) 38%,
+      transparent 74%
+    ),
+
+    /* empuje rosado a la derecha (como el banner) */
+    radial-gradient(
+      980px 420px at 86% 22%,
+      rgba(var(--brand), 0.36),
       transparent 72%
     ),
-    /* capa secundaria: empuje a la derecha tipo aurora del banner */
-    radial-gradient(
-      1000px 380px at 85% 20%,
-      rgba(194, 43, 62, 0.22),
-      transparent 75%
-    ),
-    /* capa final: un velo lineal MUY sutil para que “respire” como el banner */
+
+    /* velo horizontal suave para que “arranque” igual */
     linear-gradient(
       90deg,
-      rgba(194, 43, 62, 0.14) 0%,
-      rgba(194, 43, 62, 0.06) 45%,
-      transparent 80%
+      rgba(var(--brand), 0.22) 0%,
+      rgba(var(--brand), 0.12) 42%,
+      transparent 78%
     );
 
+  /* micro suavizado */
+  filter: blur(0.2px);
   pointer-events: none;
 }
 
-/* =========================================
-   REFLEJO PREMIUM (cada 60s)
-========================================= */
-.card::after {
+/* =========================
+   REFLEJO (sheen) cada 60s
+   ========================= */
+.card::after{
   content: "";
   position: absolute;
-  inset: -50% -60%;
-
+  inset: -60% -70%;
   background: linear-gradient(
     110deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.10) 46%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0.10) 54%,
-    transparent 65%
+    transparent 38%,
+    rgba(255,255,255,0.10) 46%,
+    rgba(255,255,255,0.22) 50%,
+    rgba(255,255,255,0.10) 54%,
+    transparent 64%
   );
-
-  transform: translateX(-70%);
+  transform: translateX(-65%);
   opacity: 0;
   pointer-events: none;
 
+  /* ✅ Solo pasa el brillo al inicio del ciclo */
   animation: sheen-60s 60s linear infinite;
 }
 
-/* =========================================
-   CONTENIDO INTERNO
-========================================= */
-.card-inner {
+.card-inner{
   position: relative;
   padding: 18px 20px;
 }
 
-/* =========================================
-   TEXTO ESTILO APPLE
-========================================= */
-.title {
+/* Tipografía */
+.title{
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0 0 8px 0;
-
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--txt-1);
 }
 
-.subtitle {
+.subtitle{
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.35;
   margin: 0;
+  color: var(--txt-2);
 
-  color: rgba(255, 255, 255, 0.72);
-
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity 220ms ease, transform 220ms ease;
 }
 
-/* Fade al cambiar frase */
-.subtitle.is-fading {
+.subtitle.is-fading{
   opacity: 0;
   transform: translateY(2px);
 }
 
-/* =========================================
-   ANIMACIÓN ENTRADA PREMIUM
-========================================= */
-@keyframes enter-premium {
-  from {
+/* =========================
+   ANIMACIONES
+   ========================= */
+
+/* Entrada ultra premium: blur + lift + micro pop */
+@keyframes enter-ultra{
+  0%{
     opacity: 0;
     transform: translateY(14px) scale(0.985);
     filter: blur(10px);
   }
-  to {
+  55%{
     opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
+    transform: translateY(-2px) scale(1.008);
+    filter: blur(0px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+    filter: blur(0px);
   }
 }
 
-/* =========================================
-   REFLEJO CADA 60s (solo pasa al inicio)
-========================================= */
-@keyframes sheen-60s {
-  0% {
-    opacity: 0;
-    transform: translateX(-70%);
-  }
-
-  3% {
-    opacity: 0.9;
-  }
-
-  10% {
-    opacity: 0;
-    transform: translateX(70%);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(70%);
-  }
+/* Reflejo 60s: brilla solo al principio y descansa */
+@keyframes sheen-60s{
+  0%   { opacity: 0; transform: translateX(-65%); }
+  3%   { opacity: 0.95; }
+  11%  { opacity: 0; transform: translateX(65%); }
+  100% { opacity: 0; transform: translateX(65%); }
 }
 
-/* =========================================
-   RESPONSIVE MÓVIL
-========================================= */
-@media (max-width: 480px) {
-  .wrap {
-    min-height: 110px;
-  }
-
-  .card-inner {
-    padding: 16px 16px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-  }
+/* Responsive */
+@media (max-width: 480px){
+  .wrap{ min-height: 120px; }
+  .card-inner{ padding: 16px 16px; }
+  .title{ font-size: 20px; }
+  .subtitle{ font-size: 14px; }
 }
