@@ -1,6 +1,6 @@
-/* ==========
-   FONDO TRANSPARENTE SIEMPRE
-   ========== */
+/* =========================================
+   FONDO TRANSPARENTE TOTAL (Notion embed)
+========================================= */
 html,
 body {
   background: transparent !important;
@@ -11,14 +11,17 @@ body {
 body {
   color: #fff;
   font-family: ui-sans-serif, system-ui, -apple-system,
-    "SF Pro Display", "SF Pro Text",
+    BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
     "Segoe UI", Roboto, Helvetica, Arial,
     "Apple Color Emoji", "Segoe UI Emoji";
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Contenedor sin fondo */
+/* =========================================
+   CONTENEDOR CENTRADO SIN FONDO
+========================================= */
 .wrap {
   background: transparent !important;
   padding: 0;
@@ -31,36 +34,32 @@ body {
   min-height: 120px;
 }
 
-/* ==========
-   CAJA OSCURA FIJA (SIN SOMBRA)
-   ========== */
+/* =========================================
+   CAJA OSCURA PREMIUM FIJA (SIEMPRE)
+========================================= */
 .card {
   width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
 
-  /* caja negra limpia */
+  /* Caja negra fija */
   background: rgba(10, 10, 12, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
 
-  /* SIN SOMBRA */
-  box-shadow: none !important;
+  /* Borde rosado premium */
+  border: 1px solid rgba(255, 80, 120, 0.20);
+
+  /* Sin sombra exterior */
+  box-shadow: none;
 
   position: relative;
   overflow: hidden;
 
-  /* Entrada ULTRA premium */
-  animation: enter-ultra 880ms cubic-bezier(.16, 1, .3, 1) both;
+  /* Entrada ultra premium */
+  animation: enter-premium 650ms cubic-bezier(.2,.9,.2,1) both;
 }
 
-/* ==========
-   COLOR MARCA EXACTO: R194 G43 B62
-   ========== */
-:root {
-  --brand: 194, 43, 62;
-}
-
-/* Difuminado marca (más fiel) */
-/* Toque marca EXACTO (RGB 194,43,62) */
+/* =========================================
+   GLOW ROSADO EXACTO COMO TU WEB
+========================================= */
 .card::before {
   content: "";
   position: absolute;
@@ -68,55 +67,61 @@ body {
 
   background:
     radial-gradient(
-      800px 240px at 15% 20%,
-      rgba(194, 43, 62, 0.32),
-      transparent 60%
+      700px 260px at 20% 25%,
+      rgba(255, 80, 120, 0.55),
+      transparent 65%
     ),
     radial-gradient(
-      900px 260px at 85% 10%,
-      rgba(194, 43, 62, 0.18),
+      900px 320px at 85% 15%,
+      rgba(255, 20, 90, 0.22),
       transparent 70%
     );
 
   pointer-events: none;
 }
 
-/* ==========
-   REFLEJO PREMIUM cada 60s
-   ========== */
+/* =========================================
+   REFLEJO PREMIUM (cada 60s)
+========================================= */
 .card::after {
   content: "";
   position: absolute;
-  inset: -40% -60%;
+  inset: -50% -60%;
+
   background: linear-gradient(
     110deg,
     transparent 35%,
     rgba(255, 255, 255, 0.10) 46%,
-    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.22) 50%,
     rgba(255, 255, 255, 0.10) 54%,
     transparent 65%
   );
 
-  transform: translateX(-60%);
+  transform: translateX(-70%);
   opacity: 0;
   pointer-events: none;
 
-  /* cada 60s */
   animation: sheen-60s 60s linear infinite;
 }
 
+/* =========================================
+   CONTENIDO INTERNO
+========================================= */
 .card-inner {
   position: relative;
   padding: 18px 20px;
 }
 
-/* Tipografía estilo Apple */
+/* =========================================
+   TEXTO ESTILO APPLE
+========================================= */
 .title {
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0 0 8px 0;
+
   color: rgba(255, 255, 255, 0.96);
 }
 
@@ -126,49 +131,75 @@ body {
   letter-spacing: -0.01em;
   line-height: 1.35;
   margin: 0;
+
   color: rgba(255, 255, 255, 0.72);
 
-  transition: opacity 260ms ease, transform 260ms ease;
+  transition: opacity 240ms ease, transform 240ms ease;
 }
 
+/* Fade al cambiar frase */
 .subtitle.is-fading {
   opacity: 0;
   transform: translateY(2px);
 }
 
-/* ==========
-   ANIMACIONES
-   ========== */
-
-/* entrada ultra (más “cine” sin romper nada) */
-@keyframes enter-ultra {
-  0% {
+/* =========================================
+   ANIMACIÓN ENTRADA PREMIUM
+========================================= */
+@keyframes enter-premium {
+  from {
     opacity: 0;
-    transform: translateY(16px) scale(0.985);
+    transform: translateY(14px) scale(0.985);
     filter: blur(10px);
   }
-  55% {
-    opacity: 1;
-    transform: translateY(-2px) scale(1.006);
-    filter: blur(0);
-  }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
+/* =========================================
+   REFLEJO CADA 60s (solo pasa al inicio)
+========================================= */
 @keyframes sheen-60s {
-  0%   { opacity: 0; transform: translateX(-60%); }
-  4%   { opacity: 0.85; }
-  14%  { opacity: 0; transform: translateX(60%); }
-  100% { opacity: 0; transform: translateX(60%); }
+  0% {
+    opacity: 0;
+    transform: translateX(-70%);
+  }
+
+  3% {
+    opacity: 0.9;
+  }
+
+  10% {
+    opacity: 0;
+    transform: translateX(70%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(70%);
+  }
 }
 
-/* Responsive móvil */
+/* =========================================
+   RESPONSIVE MÓVIL
+========================================= */
 @media (max-width: 480px) {
-  .wrap { min-height: 110px; }
-  .card-inner { padding: 16px 16px; }
-  .title { font-size: 20px; }
-  .subtitle { font-size: 14px; }
+  .wrap {
+    min-height: 110px;
+  }
+
+  .card-inner {
+    padding: 16px 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
 }
