@@ -49,13 +49,27 @@ body {
 }
 
 /* Toque marca (granate/rosa) suave */
+:root{
+  /* Color de tu marca (aprox del swatch): ajusta si quieres */
+  --brand: 186, 40, 61;   /* #BA283D */
+}
+
 .card::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-  radial-gradient(800px 240px at 15% 20%, rgba(168, 36, 76, 0.26), transparent 45%),
-  radial-gradient(900px 260px at 85% 10%, rgba(255, 0, 84, 0.12), transparent 50%);
+    /* 1) “Arranque” más claro (un toque de luz) */
+    radial-gradient(520px 220px at 12% 18%,
+      rgba(255,255,255,0.06), transparent 58%),
+
+    /* 2) Marca principal (más clara, menos opacidad) */
+    radial-gradient(820px 260px at 14% 20%,
+      rgba(var(--brand), 0.26), transparent 60%),
+
+    /* 3) Segundo toque de marca suave */
+    radial-gradient(940px 300px at 86% 12%,
+      rgba(var(--brand), 0.14), transparent 64%);
   pointer-events: none;
 }
 
