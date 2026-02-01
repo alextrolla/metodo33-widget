@@ -1,6 +1,6 @@
-/* =========================================
-   FONDO TRANSPARENTE TOTAL (Notion embed)
-========================================= */
+/* ==========
+   TRANSPARENCIA TOTAL
+   ========== */
 html,
 body {
   background: transparent !important;
@@ -10,18 +10,14 @@ body {
 
 body {
   color: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    "Segoe UI", Roboto, Helvetica, Arial,
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
     "Apple Color Emoji", "Segoe UI Emoji";
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* =========================================
-   CONTENEDOR CENTRADO SIN FONDO
-========================================= */
+/* Contenedor sin fondo */
 .wrap {
   background: transparent !important;
   padding: 0;
@@ -31,35 +27,35 @@ body {
   justify-content: center;
   align-items: center;
 
-  min-height: 120px;
+  min-height: 130px;
 }
 
-/* =========================================
-   CAJA OSCURA PREMIUM FIJA (SIEMPRE)
-========================================= */
+/* ==========
+   CARD OSCURA FIJA (SIEMPRE)
+   ========== */
 .card {
   width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
 
-  /* Caja negra fija */
-  background: rgba(10, 10, 12, 0.92);
+  /* Fondo oscuro perfecto */
+  background: rgba(12, 12, 14, 0.92);
 
-  /* Borde rosado premium */
-  border: 1px solid rgba(255, 80, 120, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.10);
 
-  /* Sin sombra exterior */
+  /* SIN sombra */
   box-shadow: none;
 
   position: relative;
   overflow: hidden;
 
-  /* Entrada ultra premium */
-  animation: enter-premium 650ms cubic-bezier(.2,.9,.2,1) both;
+  /* ===== ENTRADA SUPER PREMIUM ===== */
+  transform-origin: 50% 40%;
+  animation: enter-ultra 900ms cubic-bezier(.16, 1, .3, 1) both;
 }
 
-/* =========================================
-   GLOW ROSADO EXACTO COMO TU WEB
-========================================= */
+/* ==========
+   DIFUMINADO DE MARCA (EL BUENO)
+   ========== */
 .card::before {
   content: "";
   position: absolute;
@@ -67,61 +63,56 @@ body {
 
   background:
     radial-gradient(
-      700px 260px at 20% 25%,
-      rgba(255, 80, 120, 0.55),
-      transparent 65%
+      800px 240px at 15% 20%,
+      rgba(168, 36, 76, 0.35),
+      transparent 55%
     ),
     radial-gradient(
-      900px 320px at 85% 15%,
-      rgba(255, 20, 90, 0.22),
-      transparent 70%
+      900px 260px at 85% 10%,
+      rgba(255, 0, 84, 0.16),
+      transparent 60%
     );
 
   pointer-events: none;
 }
 
-/* =========================================
+/* ==========
    REFLEJO PREMIUM (cada 60s)
-========================================= */
+   ========== */
 .card::after {
   content: "";
   position: absolute;
-  inset: -50% -60%;
+  inset: -40% -60%;
 
   background: linear-gradient(
     110deg,
     transparent 35%,
     rgba(255, 255, 255, 0.10) 46%,
-    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.18) 50%,
     rgba(255, 255, 255, 0.10) 54%,
     transparent 65%
   );
 
-  transform: translateX(-70%);
+  transform: translateX(-60%);
   opacity: 0;
   pointer-events: none;
 
   animation: sheen-60s 60s linear infinite;
 }
 
-/* =========================================
-   CONTENIDO INTERNO
-========================================= */
+/* Padding interno */
 .card-inner {
   position: relative;
   padding: 18px 20px;
 }
 
-/* =========================================
-   TEXTO ESTILO APPLE
-========================================= */
+/* Tipografía Apple limpia */
 .title {
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0 0 8px 0;
-
   color: rgba(255, 255, 255, 0.96);
 }
 
@@ -131,75 +122,54 @@ body {
   letter-spacing: -0.01em;
   line-height: 1.35;
   margin: 0;
-
   color: rgba(255, 255, 255, 0.72);
 
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity 220ms ease, transform 220ms ease;
 }
 
-/* Fade al cambiar frase */
 .subtitle.is-fading {
   opacity: 0;
   transform: translateY(2px);
 }
 
-/* =========================================
-   ANIMACIÓN ENTRADA PREMIUM
-========================================= */
-@keyframes enter-premium {
-  from {
-    opacity: 0;
-    transform: translateY(14px) scale(0.985);
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
+/* ==========
+   ANIMACIONES
+   ========== */
 
-/* =========================================
-   REFLEJO CADA 60s (solo pasa al inicio)
-========================================= */
-@keyframes sheen-60s {
+/* Entrada ultra: blur + glow + bounce suave */
+@keyframes enter-ultra {
   0% {
     opacity: 0;
-    transform: translateX(-70%);
+    transform: translateY(26px) scale(0.965);
+    filter: blur(14px);
   }
-
-  3% {
-    opacity: 0.9;
+  55% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.01);
+    filter: blur(0px);
   }
-
-  10% {
-    opacity: 0;
-    transform: translateX(70%);
+  72% {
+    transform: translateY(2px) scale(0.998);
   }
-
   100% {
-    opacity: 0;
-    transform: translateX(70%);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
   }
 }
 
-/* =========================================
-   RESPONSIVE MÓVIL
-========================================= */
+/* Reflejo: aparece al principio y luego descansa */
+@keyframes sheen-60s {
+  0%   { opacity: 0; transform: translateX(-60%) rotate(0.001deg); }
+  3%   { opacity: 0.9; }
+  12%  { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
+  100% { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
+}
+
+/* Responsive */
 @media (max-width: 480px) {
-  .wrap {
-    min-height: 110px;
-  }
-
-  .card-inner {
-    padding: 16px 16px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-  }
+  .wrap { min-height: 120px; }
+  .card-inner { padding: 16px 16px; }
+  .title { font-size: 20px; }
+  .subtitle { font-size: 14px; }
 }
