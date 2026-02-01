@@ -8,7 +8,6 @@ body {
   padding: 0;
 }
 
-/* Evita “blancos raros” y respeta transparencia en embeds */
 body {
   color: #fff;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
@@ -23,38 +22,35 @@ body {
   padding: 0;
   margin: 0;
 
-  /* centra el widget */
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* altura justa para Notion */
   min-height: 120px;
 }
 
 /* ==========
-   LA CAJA (card) SIEMPRE OSCURA
+   LA CAJA (card) SIEMPRE OSCURA (no cambia)
    ========== */
 .card {
   width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
 
-  /* Fondo negro fijo */
   background: rgba(12, 12, 14, 0.92);
-
-  /* Borde fino elegante (para que se vea bien en fondo blanco o negro) */
   border: 1px solid rgba(255, 255, 255, 0.10);
 
-  /* sombra suave (que funcione sobre blanco también) */
   box-shadow:
     0 14px 40px rgba(0, 0, 0, 0.22),
     0 2px 10px rgba(0, 0, 0, 0.18);
 
   position: relative;
   overflow: hidden;
+
+  /* ===== Entrada premium ===== */
+  animation: enter-premium 520ms cubic-bezier(.2,.9,.2,1) both;
 }
 
-/* Toque marca (granate/rosa) SIN cambiar el fondo a claro */
+/* Toque marca (granate/rosa) suave */
 .card::before {
   content: "";
   position: absolute;
@@ -65,12 +61,33 @@ body {
   pointer-events: none;
 }
 
+/* ===== Shine premium cada 20s (corto y elegante) ===== */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -40% -60%;
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.10) 46%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.10) 54%,
+    transparent 65%
+  );
+  transform: translateX(-60%);
+  opacity: 0;
+  pointer-events: none;
+
+  /* Dura 20s, pero “brilla” solo al principio (0–12%) y luego descansa */
+  animation: sheen-20s 20s linear infinite;
+}
+
 .card-inner {
   position: relative;
   padding: 18px 20px;
 }
 
-/* Tipografía estilo “Apple/Notion limpio” */
+/* Tipografía estilo Apple/limpio */
 .title {
   font-size: 24px;
   font-weight: 700;
@@ -87,6 +104,36 @@ body {
   line-height: 1.35;
   margin: 0;
   color: rgba(255, 255, 255, 0.72);
+
+  /* transición bonita para cuando cambie cada 20s */
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+/* Clase para animar cambio de frase */
+.subtitle.is-fading {
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+/* ===== Animaciones ===== */
+@keyframes enter-premium {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes sheen-20s {
+  0%   { opacity: 0; transform: translateX(-60%) rotate(0.001deg); }
+  3%   { opacity: 0.9; }
+  12%  { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
+  100% { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
 }
 
 /* Responsive para móvil */
