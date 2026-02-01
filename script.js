@@ -25,14 +25,14 @@
 
     let tries = 0;
     let candidate = arr[Math.floor(Math.random() * arr.length)];
-    while (candidate === avoid && tries < 8) {
+    while (candidate === avoid && tries < 12) {
       candidate = arr[Math.floor(Math.random() * arr.length)];
       tries++;
     }
     return candidate;
   }
 
-  // ---------------- Frases (las tuyas) ----------------
+  // ---------------- Frases ----------------
   const QUOTES = {
     morning: [
       "Haz lo difícil ahora. Lo fácil no construye nada.",
@@ -132,40 +132,51 @@
     ]
   };
 
-  // ---------------- Render ----------------
+  // ---------------- DOM ----------------
   const titleEl = document.getElementById("title");
   const subEl = document.getElementById("subtitle");
 
   // Nombre por URL: ?name=Gabriel
   const name = getParam("name", "Gabriel");
 
-  const now = new Date();
-  const hour = now.getHours();
+  let currentQuote = "";
 
-  const bucket = getBucketByHour(hour); // morning/afternoon/night
-  const greeting = getGreetingByBucket(bucket);
-
-  titleEl.textContent = `👋 ${greeting}, ${name}`;
-
-  let currentQuote = pickRandom(QUOTES[bucket], null);
-  subEl.textContent = currentQuote;
-
-  // ---------------- Cambio cada 20s (premium) ----------------
-  // Si NO quieres que cambie la frase, pon esto en false:
-  const ROTATE_QUOTE_EVERY_20S = true;
-
-  if (ROTATE_QUOTE_EVERY_20S) {
-    setInterval(() => {
-      const next = pickRandom(QUOTES[bucket], currentQuote);
-      if (!next || next === currentQuote) return;
-
-      // animación suave de salida/entrada
-      subEl.classList.add("is-fading");
-      setTimeout(() => {
-        currentQuote = next;
-        subEl.textContent = currentQuote;
-        subEl.classList.remove("is-fading");
-      }, 220);
-    }, 20000);
+  function renderGreetingNow() {
+    const now = new Date();
+    const bucket = getBucketByHour(now.getHours());
+    const greeting = getGreetingByBucket(bucket);
+    titleEl.textContent = `👋 ${greeting}, ${name}`;
+    return bucket;
   }
+
+  function setQuote(text) {
+    currentQuote = text;
+    subEl.textContent = text;
+  }
+
+  function rotateQuoteForCurrentBucket() {
+    const bucket = renderGreetingNow(); // recalcula saludo y bucket SIEMPRE
+    const next = pickRandom(QUOTES[bucket], currentQuote);
+    if (!next || next === currentQuote) return;
+
+    subEl.classList.add("is-fading");
+    setTimeout(() => {
+      setQuote(next);
+      subEl.classList.remove("is-fading");
+    }, 220);
+  }
+
+  // ---------------- INIT ----------------
+  const initialBucket = renderGreetingNow();
+  setQuote(pickRandom(QUOTES[initialBucket], null));
+
+  // ---------------- Sync premium ----------------
+  // Reflejo (CSS): 30s
+  // Frase: 60s, pero cambia cuando el reflejo está pasando (cada 2 reflejos)
+  const QUOTE_PERIOD_MS = 60000;
+  const SHEEN_PASS_DELAY_MS = 1500; // coincide con el "paso" del brillo (2.5%–10% de 30s)
+
+  setInterval(() => {
+    setTimeout(rotateQuoteForCurrentBucket, SHEEN_PASS_DELAY_MS);
+  }, QUOTE_PERIOD_MS);
 })();
