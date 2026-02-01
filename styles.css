@@ -1,115 +1,33 @@
-/* Reset and Base */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Importante: ayuda a que el navegador respete auto (dark/light) sin forzar fondos raros -->
+    <meta name="color-scheme" content="dark light" />
+    <title>M33 Widget</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
 
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* Prevents scrollbars in small embed windows */
-    background: transparent !important;
-}
+  <body>
+    <main id="root">
+      <section class="card" aria-label="saludo">
+        <div class="topline">
+          <div class="hello" id="hello">👋</div>
+          <div class="title" id="title">Buenas,</div>
+        </div>
 
-/* System Font Stack - Apple/Notion Style */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #37352f; /* Standard Notion Light Mode Text */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Vertically center in the embed window */
-}
+        <div class="subtitle" id="subtitle">
+          Cargando frase…
+        </div>
 
-/* Main Container */
-#widget-container {
-    width: 100%;
-    max-width: 600px; /* Cap width for desktop readability */
-    padding: 0 4px; /* Minimal padding */
-    opacity: 0; /* Hidden for fade-in */
-    animation: fadeIn 250ms ease-out forwards;
-}
+        <!-- Loader “pro” dentro del card (no pantalla completa, para que Notion lo vea clean) -->
+        <div class="loader" id="loader" aria-hidden="true">
+          <div class="shimmer"></div>
+        </div>
+      </section>
+    </main>
 
-/* Header Row (Greeting + Day) */
-.top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 6px;
-}
-
-/* Greeting Typography */
-#greeting-text {
-    font-size: 1.1rem; /* ~17-18px */
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-}
-
-/* Day Counter Typography */
-#day-counter {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #7A0D1A; /* Brand Accent */
-    opacity: 0.8;
-    white-space: nowrap;
-    margin-left: 12px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Quote Typography */
-.quote-container {
-    display: flex;
-    align-items: flex-start;
-}
-
-#quote-text {
-    font-size: 0.95rem; /* ~15px */
-    line-height: 1.5;
-    color: rgba(55, 53, 47, 0.85); /* Slightly softer than header */
-    padding-left: 10px;
-    border-left: 3px solid #7A0D1A; /* Minimal Brand Accent Bar */
-}
-
-/* Dark Mode Adaptation */
-@media (prefers-color-scheme: dark) {
-    body {
-        color: #ffffff; /* Notion Dark Mode Text */
-    }
-    
-    #greeting-text {
-        color: rgba(255, 255, 255, 0.95);
-    }
-
-    #quote-text {
-        color: rgba(255, 255, 255, 0.7);
-    }
-    
-    #day-counter {
-        /* Brighten accent slightly for readability against dark bg, 
-           or keep strict brand if contrast permits. 
-           Keeping strict brand but adding opacity for blend. */
-        color: #b83d4d; /* Slightly lighter variation of burgundy for dark mode legibility */
-    }
-
-    #quote-text {
-        border-left-color: #b83d4d; /* Matching lighter accent */
-    }
-}
-
-/* Animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(2px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 420px) {
-    #greeting-text { font-size: 1rem; }
-    #quote-text { font-size: 0.9rem; }
-}
+    <script src="./script.js" defer></script>
+  </body>
+</html>
