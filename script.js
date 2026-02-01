@@ -163,19 +163,27 @@
     setTimeout(() => {
       setQuote(next);
       subEl.classList.remove("is-fading");
-    }, 220);
+    }, 260);
   }
 
   // ---------------- INIT ----------------
   const initialBucket = renderGreetingNow();
   setQuote(pickRandom(QUOTES[initialBucket], null));
 
-  // ---------------- Sync premium ----------------
-  // Reflejo (CSS): 30s
-  // Frase: 60s, pero cambia cuando el reflejo está pasando (cada 2 reflejos)
-  const QUOTE_PERIOD_MS = 60000;
-  const SHEEN_PASS_DELAY_MS = 1500; // coincide con el "paso" del brillo (2.5%–10% de 30s)
+  // ---------------- Sync reflejo 60s + frase 120s ----------------
+  // CSS sheen: 60s
+  // Frase: 120s (cada 2 reflejos)
+  const SHEEN_PERIOD_MS = 60000;
+  const QUOTE_PERIOD_MS = 120000;
 
+  // Ajuste fino: hace que el cambio ocurra cuando el reflejo ya está pasando.
+  // Si quieres que cambie un poquito antes o después, toca este número.
+  const SHEEN_PASS_DELAY_MS = 2400;
+
+  // Mantiene el saludo correcto aunque cambie la hora sin recargar
+  setInterval(renderGreetingNow, 60000);
+
+  // (Opcional) primer reflejo ya va solo por CSS. Aquí solo cambiamos frase sincronizada.
   setInterval(() => {
     setTimeout(rotateQuoteForCurrentBucket, SHEEN_PASS_DELAY_MS);
   }, QUOTE_PERIOD_MS);
