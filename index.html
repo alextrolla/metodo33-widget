@@ -2,32 +2,32 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Importante: ayuda a que el navegador respete auto (dark/light) sin forzar fondos raros -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Ayuda a que el navegador/iframe sepa que soportas dark/light -->
     <meta name="color-scheme" content="dark light" />
+
     <title>M33 Widget</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
 
   <body>
-    <main id="root">
-      <section class="card" aria-label="saludo">
-        <div class="topline">
-          <div class="hello" id="hello">👋</div>
-          <div class="title" id="title">Buenas,</div>
+    <main class="wrap" aria-live="polite">
+      <!-- Card -->
+      <section class="card" id="card">
+        <div class="card__top">
+          <div class="greeting" id="greeting">👋 Hola</div>
         </div>
 
-        <div class="subtitle" id="subtitle">
-          Cargando frase…
+        <div class="card__bottom">
+          <div class="quote" id="quote">Cargando frase…</div>
         </div>
 
-        <!-- Loader “pro” dentro del card (no pantalla completa, para que Notion lo vea clean) -->
-        <div class="loader" id="loader" aria-hidden="true">
-          <div class="shimmer"></div>
-        </div>
+        <!-- Brillito / entrada suave -->
+        <div class="shine" aria-hidden="true"></div>
       </section>
     </main>
 
-    <script src="./script.js" defer></script>
+    <script src="./script.js"></script>
   </body>
 </html>
