@@ -2,32 +2,24 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- IMPORTANTE: ayuda a que el motor no “aclare” estilos -->
+    <meta name="color-scheme" content="dark" />
 
-    <!-- Ayuda a que el navegador/iframe sepa que soportas dark/light -->
-    <meta name="color-scheme" content="dark light" />
-
-    <title>M33 Widget</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>Widget M33</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <main class="wrap" aria-live="polite">
-      <!-- Card -->
-      <section class="card" id="card">
-        <div class="card__top">
-          <div class="greeting" id="greeting">👋 Hola</div>
+    <main class="wrap" aria-label="M33 widget">
+      <section class="card" role="group" aria-label="Saludo y frase motivadora">
+        <div class="card-inner">
+          <div class="title" id="title">👋 Buenas,</div>
+          <div class="subtitle" id="subtitle">Hoy toca sumar.</div>
         </div>
-
-        <div class="card__bottom">
-          <div class="quote" id="quote">Cargando frase…</div>
-        </div>
-
-        <!-- Brillito / entrada suave -->
-        <div class="shine" aria-hidden="true"></div>
       </section>
     </main>
 
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
