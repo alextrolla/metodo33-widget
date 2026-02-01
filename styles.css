@@ -54,8 +54,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(800px 240px at 15% 20%, rgba(168, 36, 76, 0.35), transparent 55%),
-    radial-gradient(900px 260px at 85% 10%, rgba(255, 0, 84, 0.16), transparent 60%);
+  radial-gradient(800px 240px at 15% 20%, rgba(168, 36, 76, 0.26), transparent 45%),
+  radial-gradient(900px 260px at 85% 10%, rgba(255, 0, 84, 0.12), transparent 50%);
   pointer-events: none;
 }
 
