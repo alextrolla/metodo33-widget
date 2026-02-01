@@ -1,27 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Critical to prevent white flash in iframe */
-        html, body { background-color: transparent !important; }
-    </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Importante: ayuda a que el navegador respete auto (dark/light) sin forzar fondos raros -->
+    <meta name="color-scheme" content="dark light" />
+    <title>M33 Widget</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
 
-    <main id="widget-container">
-        <div class="top-row">
-            <h1 id="greeting-text">Loading...</h1>
-            <span id="day-counter" class="hidden"></span>
+  <body>
+    <main id="root">
+      <section class="card" aria-label="saludo">
+        <div class="topline">
+          <div class="hello" id="hello">👋</div>
+          <div class="title" id="title">Buenas,</div>
         </div>
-        <div class="quote-container">
-            <p id="quote-text"></p>
+
+        <div class="subtitle" id="subtitle">
+          Cargando frase…
         </div>
+
+        <!-- Loader “pro” dentro del card (no pantalla completa, para que Notion lo vea clean) -->
+        <div class="loader" id="loader" aria-hidden="true">
+          <div class="shimmer"></div>
+        </div>
+      </section>
     </main>
 
-    <script src="script.js"></script>
-</body>
+    <script src="./script.js" defer></script>
+  </body>
 </html>
