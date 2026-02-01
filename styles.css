@@ -1,5 +1,5 @@
 /* ==========
-   TRANSPARENCIA TOTAL
+   TRANSPARENCIA TOTAL (Notion embed)
    ========== */
 html,
 body {
@@ -11,13 +11,11 @@ body {
 body {
   color: #fff;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
+    "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Contenedor sin fondo */
 .wrap {
   background: transparent !important;
   padding: 0;
@@ -26,85 +24,89 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  min-height: 130px;
+  min-height: 120px;
 }
 
 /* ==========
-   CARD OSCURA FIJA (SIEMPRE)
+   CARD: ROJO/ROSA PRO + NEGRO EN EL DEGRADADO
    ========== */
 .card {
   width: min(920px, calc(100vw - 32px));
   border-radius: 18px;
-
-  /* Fondo oscuro perfecto */
-  background: rgba(12, 12, 14, 0.92);
-
-  border: 1px solid rgba(255, 255, 255, 0.10);
-
-  /* SIN sombra */
-  box-shadow: none;
-
   position: relative;
   overflow: hidden;
 
-  /* ===== ENTRADA SUPER PREMIUM ===== */
-  transform-origin: 50% 40%;
-  animation: enter-ultra 900ms cubic-bezier(.16, 1, .3, 1) both;
+  /* SIN sombra externa (para no ensuciar Notion) */
+  box-shadow: none;
+
+  /* borde fino premium */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  /* "glass" suave */
+  backdrop-filter: blur(18px);
+
+  /* Entrada mega premium */
+  animation: enter-premium 720ms cubic-bezier(.16,1,.3,1) both;
 }
 
-/* ==========
-   DIFUMINADO DE MARCA (EL BUENO)
-   ========== */
+/* Fondo principal: negro -> rojo -> vino suave (protagonista rojo) */
 .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  /* Ajusta SOLO estas 3 variables si quieres luego micro-tuning */
+  --m33-black: rgba(10, 10, 12, 0.86);
+  --m33-rose:  rgba(255, 92, 132, 0.34);  /* rosa vivo */
+  --m33-red:   rgba(210, 45, 85, 0.46);   /* rojo marca */
+
   background:
-    radial-gradient(
-      800px 240px at 15% 20%,
-      rgba(255, 90, 140, 0.42),
-      transparent 58%
-    ),
-    radial-gradient(
-      900px 260px at 85% 10%,
-      rgba(255, 120, 170, 0.22),
-      transparent 65%
-    );
+    /* base oscura para que siempre funcione en fondo blanco */
+    radial-gradient(900px 360px at 18% 18%, rgba(0,0,0,0.55), transparent 62%),
+    /* rojo protagonista (centro) */
+    radial-gradient(880px 340px at 38% 28%, var(--m33-red), transparent 60%),
+    /* rosa vivo (highlight) */
+    radial-gradient(760px 300px at 82% 22%, var(--m33-rose), transparent 62%),
+    /* capa final negra que “cierra” bordes */
+    linear-gradient(180deg, var(--m33-black), rgba(12,12,14,0.72));
+
+  pointer-events: none;
 }
 
 /* ==========
-   REFLEJO PREMIUM (cada 60s)
+   REFLEJO premium cada 60s
    ========== */
 .card::after {
   content: "";
   position: absolute;
-  inset: -40% -60%;
-
+  inset: -50% -60%;
   background: linear-gradient(
     110deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.10) 46%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.10) 54%,
-    transparent 65%
+    transparent 40%,
+    rgba(255, 255, 255, 0.06) 48%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 62%
   );
-
-  transform: translateX(-60%);
+  transform: translateX(-70%);
   opacity: 0;
   pointer-events: none;
 
   animation: sheen-60s 60s linear infinite;
 }
 
-/* Padding interno */
 .card-inner {
   position: relative;
   padding: 18px 20px;
 }
 
-/* Tipografía Apple limpia */
+/* ==========
+   Tipografía Apple clean
+   ========== */
 .title {
   font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.15;
   margin: 0 0 8px 0;
   color: rgba(255, 255, 255, 0.96);
@@ -116,7 +118,7 @@ body {
   letter-spacing: -0.01em;
   line-height: 1.35;
   margin: 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.74);
 
   transition: opacity 220ms ease, transform 220ms ease;
 }
@@ -127,43 +129,31 @@ body {
 }
 
 /* ==========
-   ANIMACIONES
+   Animaciones
    ========== */
-
-/* Entrada ultra: blur + glow + bounce suave */
-@keyframes enter-ultra {
-  0% {
+@keyframes enter-premium {
+  from {
     opacity: 0;
-    transform: translateY(26px) scale(0.965);
-    filter: blur(14px);
+    transform: translateY(14px) scale(0.985);
+    filter: blur(12px);
   }
-  55% {
-    opacity: 1;
-    transform: translateY(-3px) scale(1.01);
-    filter: blur(0px);
-  }
-  72% {
-    transform: translateY(2px) scale(0.998);
-  }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
-    filter: blur(0px);
+    filter: blur(0);
   }
 }
 
-/* Reflejo: aparece al principio y luego descansa */
 @keyframes sheen-60s {
-  0%   { opacity: 0; transform: translateX(-60%) rotate(0.001deg); }
+  0%   { opacity: 0; transform: translateX(-70%); }
   3%   { opacity: 0.9; }
-  12%  { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
-  100% { opacity: 0; transform: translateX(60%) rotate(0.001deg); }
+  10%  { opacity: 0; transform: translateX(70%); }
+  100% { opacity: 0; transform: translateX(70%); }
 }
 
 /* Responsive */
 @media (max-width: 480px) {
-  .wrap { min-height: 120px; }
-  .card-inner { padding: 16px 16px; }
+  .card-inner { padding: 16px; }
   .title { font-size: 20px; }
   .subtitle { font-size: 14px; }
 }
