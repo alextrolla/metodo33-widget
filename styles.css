@@ -57,23 +57,17 @@ body {
    DIFUMINADO DE MARCA (EL BUENO)
    ========== */
 .card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
   background:
     radial-gradient(
       800px 240px at 15% 20%,
-      rgba(168, 36, 76, 0.35),
-      transparent 55%
+      rgba(255, 90, 140, 0.42),
+      transparent 58%
     ),
     radial-gradient(
       900px 260px at 85% 10%,
-      rgba(255, 0, 84, 0.16),
-      transparent 60%
+      rgba(255, 120, 170, 0.22),
+      transparent 65%
     );
-
-  pointer-events: none;
 }
 
 /* ==========
