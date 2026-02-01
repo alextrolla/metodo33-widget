@@ -1,146 +1,130 @@
-/* =========================
-   0) TRANSPARENCIA REAL
-   ========================= */
+/* ========== RESET / BASE ========== */
+* { box-sizing: border-box; }
 html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  padding: 0;
-  background: transparent !important;
-}
-
-/* Evita que el iframe pinte blanco por “alto enorme” */
-body {
+  background: transparent !important; /* CLAVE: nada de blanco/negro */
   overflow: hidden;
 }
 
-/* Root sin fondo, solo coloca el card */
-#root {
-  background: transparent !important;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 10px 12px;
+:root{
+  /* Marca (granate oscuro) */
+  --brand-1: #7a0f2a;   /* granate */
+  --brand-2: #b3123a;   /* acento */
+  --ink: rgba(255,255,255,0.92);
+  --sub: rgba(255,255,255,0.72);
+
+  /* Card look: por defecto lo hacemos “universal” para que sirva en fondo negro o blanco */
+  --card-bg: rgba(18,18,20,0.55);
+  --card-border: rgba(255,255,255,0.14);
+
+  /* Si el fondo donde lo pones es blanco, esto sigue viéndose bien por el borde + blur */
+  --shadow: 0 18px 50px rgba(0,0,0,0.25);
 }
 
-/* =========================
-   1) TIPOGRAFÍA “APPLE-LIKE”
-   ========================= */
-:root {
-  --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
-          "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
-          "Segoe UI Emoji";
-  --brand: #7a0f2a;      /* granate */
-  --brand2: #b81b48;     /* granate vivo */
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.70);
-  --shadow: 0 18px 45px rgba(0,0,0,0.28);
+/* Si el usuario fuerza theme=light en URL, lo ajustamos desde JS con [data-theme="light"] */
+html[data-theme="light"]{
+  --ink: rgba(10,10,12,0.92);
+  --sub: rgba(10,10,12,0.70);
+  --card-bg: rgba(255,255,255,0.70);
+  --card-border: rgba(10,10,12,0.12);
+  --shadow: 0 18px 50px rgba(0,0,0,0.18);
 }
 
-/* =========================
-   2) EL CARD (ÚNICO fondo)
-   ========================= */
-.card {
-  width: min(680px, 100%);
+/* ========== LAYOUT ========== */
+.wrap{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 14px; /* margen interno para que Notion no lo “corte” */
+}
+
+/* ========== CARD ========== */
+.card{
+  width: min(720px, 96vw);
   border-radius: 18px;
-
-  /* Fondo del widget (branding) */
+  padding: 18px 18px 16px 18px;
   background:
-    radial-gradient(120% 140% at 0% 0%,
-      rgba(184,27,72,0.35) 0%,
-      rgba(122,15,42,0.20) 38%,
-      rgba(0,0,0,0.00) 75%),
-    linear-gradient(135deg,
-      rgba(255,255,255,0.10) 0%,
-      rgba(255,255,255,0.06) 40%,
-      rgba(255,255,255,0.04) 100%);
+    radial-gradient(120% 140% at 12% 10%,
+      color-mix(in srgb, var(--brand-2) 26%, transparent),
+      transparent 58%),
+    radial-gradient(120% 140% at 92% 20%,
+      color-mix(in srgb, var(--brand-1) 22%, transparent),
+      transparent 60%),
+    var(--card-bg);
 
-  /* “Glass” */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid var(--card-border);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
-  color: var(--text);
-  font-family: var(--font);
-
-  padding: 14px 16px 14px 16px;
   position: relative;
+  overflow: hidden;
+
+  /* Animación de entrada (suave, pro) */
+  transform: translateY(6px);
+  opacity: 0;
+  animation: cardIn 420ms ease forwards;
 }
 
-/* =========================
-   3) Layout texto
-   ========================= */
-.topline {
+@keyframes cardIn{
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.card__top{
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
-.hello {
-  font-size: 20px;
-  line-height: 1;
-  transform: translateY(1px);
-}
-
-.title {
-  font-size: 20px;
+.greeting{
+  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Display", "SF Pro Text", "Inter", Segoe UI, Roboto, Helvetica, Arial;
   font-weight: 700;
-  letter-spacing: 0.2px;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.18;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.subtitle {
+.card__bottom{
   margin-top: 8px;
-  font-size: 14px;
+}
+
+.quote{
+  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Inter", Segoe UI, Roboto, Helvetica, Arial;
+  font-weight: 500;
+  color: var(--sub);
+  font-size: clamp(13px, 1.8vw, 15px);
   line-height: 1.35;
-  color: var(--muted);
 }
 
-/* =========================
-   4) Loader pro (dentro del card)
-   ========================= */
-.loader {
+/* Shine pro */
+.shine{
   position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  opacity: 0;
+  inset: -60%;
+  background: linear-gradient(120deg,
+    transparent 40%,
+    rgba(255,255,255,0.10) 50%,
+    transparent 60%);
+  transform: translateX(-40%) rotate(12deg);
+  animation: shine 3.6s ease-in-out infinite;
   pointer-events: none;
-  transition: opacity 180ms ease;
 }
 
-/* visible mientras “carga” */
-.loader.is-on {
-  opacity: 1;
+@keyframes shine{
+  0%   { transform: translateX(-45%) rotate(12deg); opacity: 0.0; }
+  20%  { opacity: 0.55; }
+  50%  { transform: translateX(10%) rotate(12deg); opacity: 0.20; }
+  100% { transform: translateX(45%) rotate(12deg); opacity: 0.0; }
 }
 
-.shimmer {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg,
-      rgba(255,255,255,0.00) 0%,
-      rgba(255,255,255,0.10) 45%,
-      rgba(255,255,255,0.00) 90%);
-  transform: translateX(-120%);
-  animation: shimmer 1.1s linear infinite;
-}
-
-@keyframes shimmer {
-  to { transform: translateX(120%); }
-}
-
-/* Reduce motion (por si acaso) */
-@media (prefers-reduced-motion: reduce) {
-  .shimmer { animation: none; }
-}
-
-/* =========================
-   5) Ajustes móvil
-   ========================= */
-@media (max-width: 420px) {
-  #root { padding: 8px 10px; }
-  .card { border-radius: 16px; }
-  .title { font-size: 18px; }
-  .subtitle { font-size: 13px; }
+/* Mobile tuning */
+@media (max-width: 420px){
+  .card{ padding: 16px 16px 14px 16px; border-radius: 16px; }
 }
